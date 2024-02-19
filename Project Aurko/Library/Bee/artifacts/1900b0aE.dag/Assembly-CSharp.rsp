@@ -360,7 +360,7 @@
 "Assets/Follow_Player.cs"
 "Assets/jump.cs"
 "Assets/move.cs"
-"Assets/sc.cs"
+"Assets/shoot.cs"
 -langversion:9.0
 
 /deterministic
