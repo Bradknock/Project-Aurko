@@ -9,7 +9,6 @@ public class move : MonoBehaviour
     public Vector3 jump;
     public float speed = 2.0f;
     public GameObject character;
-    public Animation anim;
     public bool isGrounded;
     Rigidbody rb;
 

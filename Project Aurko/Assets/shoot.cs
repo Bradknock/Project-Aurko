@@ -8,7 +8,7 @@ public class Shoot : MonoBehaviour
     public GameObject projectilePrefab;
     public float launchVelocity = 700f;
     public GameObject player;
-    Vector3 vec;
+
 
     private GameObject currentProjectile;
 
@@ -20,14 +20,8 @@ public class Shoot : MonoBehaviour
     void Update()
     {
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+         movementDirection = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
-         movementDirection = new Vector3(horizontalInput + 10, 5.0f, verticalInput + 10);
-        movementDirection.Normalize();
-
-
-        vec = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
 
         if (Input.GetButtonDown("Fire1") && currentProjectile == null)
         {
@@ -44,11 +38,12 @@ public class Shoot : MonoBehaviour
 
     void ShootProjectile()
     {
-        currentProjectile = Instantiate(projectilePrefab, vec + movementDirection, Quaternion.identity);
+        currentProjectile = Instantiate(projectilePrefab, transform.forward + movementDirection, Quaternion.identity);
         Rigidbody rb = currentProjectile.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.AddForce(transform.forward * launchVelocity);
+            rb.AddForce(new Vector3(0, 4.0f, 0) * (launchVelocity - 400));
         }
     }
 }
