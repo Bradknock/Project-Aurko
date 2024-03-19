@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 
 
 public class move : MonoBehaviour
 {
     public Vector3 jump;
-    public float jumpForce = 2.0f;
     public float speed = 2.0f;
     public GameObject character;
     public Animation anim;
@@ -32,27 +32,23 @@ public class move : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.position += Vector3.right * speed * Time.deltaTime;
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
 
-        }
-        if (Input.GetKey(KeyCode.A))
+        Vector3 movementDirection = new Vector3(horizontalInput, 0.0f, verticalInput);
+        movementDirection.Normalize();
+
+        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+
+        if (movementDirection != Vector3.zero)
         {
-            transform.position += Vector3.left * speed * Time.deltaTime;
+            transform.forward = movementDirection;
         }
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.position += Vector3.forward * speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.position += Vector3.back * speed * Time.deltaTime;
-        }
+
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
 
-            rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+            rb.AddForce(jump * speed, ForceMode.Impulse);
             isGrounded = false;
         }
     }
