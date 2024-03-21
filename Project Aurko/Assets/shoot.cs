@@ -2,24 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class shoot : MonoBehaviour
-{
-    public Vector3 s;
-    public GameObject projectile;
-    public float launchVelocity = 700f;
-    public GameObject character;
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 
-    void Update()
+public class dragNshoot : MonoBehaviour
+{
+    private Vector3 mousePressDownPos;
+    private Vector3 mouseReleasePos;
+
+    private Rigidbody rb;
+
+    private bool isShoot;
+
+    void Start()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            GameObject ball = Instantiate(projectile, transform.position, transform.rotation);
-            ball.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(launchVelocity, 0, 0));
-            if (Input.GetButtonDown("Fire2"))
-            {
-                character.transform.position = ball.transform.position;
-            }
-        }
-        
+        rb = GetComponent<Rigidbody>();
     }
+   
+        private void OnMouseDown()
+        {
+            mousePressDownPos = Input.mousePosition;
+        }
+
+        private void OnMouseUp()
+        {
+            mouseReleasePos = Input.mousePosition;
+            Shoot(mouseReleasePos - mousePressDownPos);
+        }
+
+        public float forceMultiplier = 3;
+    
+        void Shoot(Vector3 Force)
+        {
+            rb.AddForce(new Vector3(Force.x, Force.y, Force.y) * forceMultiplier);
+        }
+ 
+
 }
